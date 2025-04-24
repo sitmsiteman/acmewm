@@ -132,7 +132,7 @@ wm_init(struct wm_state *wm)
 		return false;
 	}
 
-	wm->shm = wlr_shm_create_with_renderer(wm->display, 1, wm->renderer);
+	wm->shm = wlr_shm_create_with_renderer(wm->display, 2, wm->renderer);
 	if (!wm->shm) {
 		wlr_log(WLR_ERROR, "Failed to create shm interface");
 		return false;
