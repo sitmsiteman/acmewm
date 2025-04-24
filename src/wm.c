@@ -5,6 +5,7 @@
 #include <wlr/backend.h>                  // for wlr_backend_autocreate, wlr...
 #include <wlr/render/allocator.h>         // for wlr_allocator_autocreate
 #include <wlr/render/wlr_renderer.h>      // for wlr_renderer_autocreate
+#include <wlr/types/wlr_compositor.h>     // for wlr_compositor_create
 #include <wlr/types/wlr_data_device.h>    // for wlr_data_device_manager_create
 #include <wlr/types/wlr_output.h>         // for wlr_output, wlr_output_mode
 #include <wlr/types/wlr_seat.h>           // for wlr_seat_create
@@ -12,7 +13,6 @@
 #include <wlr/types/wlr_subcompositor.h>  // for wlr_subcompositor_create
 #include <wlr/types/wlr_xdg_shell.h>      // for wlr_xdg_shell_create
 #include <wlr/util/log.h>                 // for wlr_log, wlr_log_importance
-#include "wlr/types/wlr_compositor.h"     // for wlr_compositor_create
 
 static void
 handle_new_output(struct wl_listener *listener, void *data)
