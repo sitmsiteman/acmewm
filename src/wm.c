@@ -1,18 +1,18 @@
-#include <stdlib.h>
-#include <stdbool.h>
-#include <wayland-util.h>
-#include <wlr/backend.h>
-#include <wlr/util/log.h>
-#include <wlr/types/wlr_output.h>
-#include <wlr/types/wlr_subcompositor.h>
-#include <wlr/render/wlr_renderer.h>
-#include <wlr/render/allocator.h>
-#include <wlr/types/wlr_shm.h>
-#include <wlr/types/wlr_xdg_shell.h>
-#include <wlr/types/wlr_data_device.h>
-#include <wlr/types/wlr_seat.h>
-#include <wlr/backend/session.h>
 #include "../include/wm.h"
+#include <stdbool.h>                      // for false, true, bool
+#include <stdlib.h>                       // for setenv
+#include <wayland-util.h>                 // for wl_container_of
+#include <wlr/backend.h>                  // for wlr_backend_autocreate, wlr...
+#include <wlr/render/allocator.h>         // for wlr_allocator_autocreate
+#include <wlr/render/wlr_renderer.h>      // for wlr_renderer_autocreate
+#include <wlr/types/wlr_data_device.h>    // for wlr_data_device_manager_create
+#include <wlr/types/wlr_output.h>         // for wlr_output, wlr_output_mode
+#include <wlr/types/wlr_seat.h>           // for wlr_seat_create
+#include <wlr/types/wlr_shm.h>            // for wlr_shm_create_with_renderer
+#include <wlr/types/wlr_subcompositor.h>  // for wlr_subcompositor_create
+#include <wlr/types/wlr_xdg_shell.h>      // for wlr_xdg_shell_create
+#include <wlr/util/log.h>                 // for wlr_log, wlr_log_importance
+#include "wlr/types/wlr_compositor.h"     // for wlr_compositor_create
 
 static void
 handle_new_output(struct wl_listener *listener, void *data)

@@ -1,18 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
 #include <wayland-server-core.h>
-#include <wlr/backend.h>
-#include <wlr/backend/session.h>
-#include <wlr/render/wlr_renderer.h>
-#include <wlr/types/wlr_output.h>
-#include <wlr/types/wlr_input_device.h>
-#include <wlr/types/wlr_compositor.h>
-#include <wlr/types/wlr_subcompositor.h>
-#include <wlr/types/wlr_shm.h>
-#include <wlr/types/wlr_xdg_shell.h>
-#include <wlr/types/wlr_data_device.h>
-#include <wlr/types/wlr_seat.h>
-
 
 struct wm_state {
     struct wl_display *display;
