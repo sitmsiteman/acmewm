@@ -30,32 +30,47 @@ generated_protocol_sources = []
 generated_protocol_headers = []
 
 # Generate the protocol headers
-foreach proto : protocols
-  client_header = custom_target(proto['name'] + '-client-header',
-    input: proto['xml'],
-    output: proto['name'] + '-client-protocol.h',
-    command: [wayland_scanner, 'client-header', '@INPUT@', '@OUTPUT@']
-  )
+#foreach proto : protocols
+  #server_header = custom_target(proto['name'] + '-server_header',
+    #input: proto['xml'],
+    #output: proto['name'] + '-server-protocol.h',
+    #command: [wayland_scanner, '-server-header', '@INPUT@', '@OUTPUT@']
+  #)
+#
+ #client_header = custom_target(proto['name'] + '-client_header',
+    #input: proto['xml'],
+    #output: proto['name'] + '-client-protocol.h',
+    #command: [wayland_scanner, '-client-header', '@INPUT@', '@OUTPUT@']
+  #)
+#
+  #private_code = custom_target(proto['name'] + '-code',
+    #input: proto['xml'],
+    #output: [proto['name'] + '-protocol.c'],
+    #command: [wayland_scanner, 'private-code', '@INPUT@', '@OUTPUT@']
+  #)
+#
+  #generated_protocol_sources += private_code
+  #generated_protocol_headers += [server_header, client_header]
+#endforeach
 
-  server_header = custom_target(proto['name'] + '-server-header',
-    input: proto['xml'],
-    output: proto['name'] + '-server-protocol.h',
-    command: [wayland_scanner, 'server-header', '@INPUT@', '@OUTPUT@']
-  )
+xdg_protocol_xml = files('protocols/xdg-shell.xml')
 
-  private_code = custom_target(proto['name'] + '-code',
-    input: proto['xml'],
-    output: proto['name'] + '-protocol.c',
-    command: [wayland_scanner, 'private-code', '@INPUT@', '@OUTPUT@']
-  )
+xdg_h = custom_target('xdg-shell-protocol.h',
+  input: xdg_protocol_xml,
+  output: 'xdg-shell-protocol.h',
+  command: ['wayland-scanner', 'client-header', '@INPUT@', '@OUTPUT@']
+)
 
-  generated_protocol_sources += private_code
-  generated_protocol_headers += [client_header, server_header]
-endforeach
+xdg_c = custom_target('xdg-shell-protocol.c',
+  input: xdg_protocol_xml,
+  output: 'xdg-shell-protocol.c',
+  command: ['wayland-scanner', 'private-code', '@INPUT@', '@OUTPUT@']
+)
 
 # Compile the source files for the window manager
 executable('acmewm',
-  ['src/main.c', 'src/wm.c'] + generated_protocol_sources + generated_protocol_headers,
+  sources: ['src/main.c', 'src/wm.c', xdg_h, xdg_c],
+# + generated_protocol_sources + generated_protocol_headers,
   include_directories: inc_dir,
   dependencies: dep,
   c_args: ['-DWLR_USE_UNSTABLE'],  # Enable unstable features for wlroots
