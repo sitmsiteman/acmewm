@@ -34,7 +34,15 @@ handle_new_output(struct wl_listener *listener, void *data)
 		return;
 	}
 
+
+	struct wlr_output_state state;
+	wlr_output_state_init(&state);
+
+	wlr_output_state_set_enabled(&state, true);
+
 	struct wlr_output_mode *mode = wlr_output_preferred_mode(output);
+
+
 	if (mode) {
 		wlr_log(WLR_INFO, "Preferred mode for %s: %dx%d @ %.3fHz",
 			output->name, mode->width, mode->height, (double)mode->refresh / 1000.0);
@@ -42,16 +50,15 @@ handle_new_output(struct wl_listener *listener, void *data)
 		wlr_log(WLR_INFO, "No preferred mode for output %s", output->name);
 	}
 
-	struct wlr_output_state state;
-	wlr_output_state_init(&state);
-
 	if (!mode) {
 		wlr_log(WLR_INFO, "Setting custom mode for %s: 1280x720 @ 60Hz",
 			output->name);
-		wlr_output_state_set_custom_mode(&state, 1280, 720, 60000);
+		wlr_output_state_set_custom_mode(&state, 1280, 720, 0);
 	} else {
 		wlr_output_state_set_mode(&state, mode);
 	}
+
+
 
 	wlr_log(WLR_INFO, "Committing state for output %s", output->name);
 	if (!wlr_output_commit_state(output, &state)) {
