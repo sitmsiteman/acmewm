@@ -18,6 +18,8 @@ struct wm_state {
     struct wlr_output_mode *mode;
     struct wlr_allocator *allocator;
     struct wl_listener new_output;
+    struct wl_listener new_xdg_surface;
+    struct wl_list windows;
 
     const char *socket;
 };

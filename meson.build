@@ -69,7 +69,7 @@ xdg_c = custom_target('xdg-shell-protocol.c',
 
 # Compile the source files for the window manager
 executable('acmewm',
-  sources: ['src/main.c', 'src/wm.c', xdg_h, xdg_c],
+  sources: ['src/main.c', 'src/wm.c', 'src/output.c', 'src/surface.c', xdg_h, xdg_c],
 # + generated_protocol_sources + generated_protocol_headers,
   include_directories: inc_dir,
   dependencies: dep,
