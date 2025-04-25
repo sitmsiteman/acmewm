@@ -1,9 +1,8 @@
 # meson.build
 
-project('acmewm', 'c',
+project('testwm', 'c',
   version: '0.1',
   default_options: ['warning_level=2', 'buildtype=debug'],
-
 )
 
 # Find dependencies
@@ -49,7 +48,7 @@ src = ['src/main.c', 'src/wm.c', 'src/output.c', 'src/surface.c', xdg_h, xdg_c, 
 
 args = ['-DWLR_USE_UNSTABLE']
 
-executable('acmewm',
+executable('testwm',
   sources: src,
   include_directories: inc_dir,
   dependencies: dep,
