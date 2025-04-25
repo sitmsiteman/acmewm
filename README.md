@@ -1,4 +1,3 @@
-# acmewm
-A window manager inspired by Plan 9 Acme Text Editor
+# testwm
 
-WIP. not ready yet.
+For a testing purpose.
