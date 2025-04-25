@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <wayland-server-core.h>
 
+
 struct wm_state {
     struct wl_display *display;
     struct wlr_backend *backend;
@@ -19,7 +20,12 @@ struct wm_state {
     struct wlr_allocator *allocator;
     struct wl_listener new_output;
     struct wl_listener new_xdg_surface;
+    struct wlr_output_manager_v1 *output_manager;
     struct wl_list windows;
+
+    struct wlr_primary_selection_v1_device_manager *primary_selection;
+    struct wlr_cursor_shape_manager_v1 *cursor_shape;
+    struct wlr_text_input_manager_v3 *text_input;
 
     const char *socket;
 };

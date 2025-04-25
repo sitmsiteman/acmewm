@@ -9,7 +9,11 @@
 #include <wlr/render/wlr_renderer.h>
 #include <wlr/types/wlr_compositor.h>
 #include <wlr/types/wlr_data_device.h>
+#include <wlr/types/wlr_primary_selection_v1.h>
+#include <wlr/types/wlr_cursor_shape_v1.h>
+#include <wlr/types/wlr_text_input_v3.h>
 #include <wlr/types/wlr_output.h>
+#include <wlr/types/wlr_output_management_v1.h>
 #include <wlr/types/wlr_seat.h>
 #include <wlr/types/wlr_shm.h>
 #include <wlr/types/wlr_subcompositor.h>
@@ -48,19 +52,21 @@ wm_init(struct wm_state *wm)
 	wm->new_output.notify = handle_new_output;
 	wl_signal_add(&wm->backend->events.new_output, &wm->new_output);
 
-	// Setup xdg_surface listener
-	wl_list_init(&wm->windows);
-	wm->new_xdg_surface.notify = handle_new_xdg_surface;
-	wl_signal_add(&wm->xdg_shell->events.new_surface, &wm->new_xdg_surface);
-
 	if (!wlr_backend_start(wm->backend)) {
 		wlr_log(WLR_ERROR, "Failed to start backend");
 		return false;
 	}
 
-	wm->compositor = wlr_compositor_create(wm->display, 6,wm->renderer);
+	wm->compositor = wlr_compositor_create(wm->display, 6, wm->renderer);
 	if (!wm->compositor) {
 		wlr_log(WLR_ERROR, "Failed to create compositor");
+		return false;
+	}
+
+//to do.
+	
+	if (!wm->region) {
+		wlr_log(WLR_ERROR, "Failed to create compositor region");
 		return false;
 	}
 
@@ -68,6 +74,22 @@ wm_init(struct wm_state *wm)
 	if (!wm->data_device_manager) {
 		wlr_log(WLR_ERROR, "Failed to create data device manager");
 		return false;
+	}
+
+	wm->primary_selection = wlr_primary_selection_v1_device_manager_create (wm->display);
+	if (!wm->primary_selection) {
+		wlr_log(WLR_ERROR,
+			"Failed to create primary selection manager");
+	}
+
+	wm->cursor_shape = wlr_cursor_shape_manager_v1_create(wm->display, 1);
+	if (!wm->cursor_shape) {
+		wlr_log(WLR_ERROR, "Failed to create cursor shape manager");
+	}
+
+	wm->text_input = wlr_text_input_manager_v3_create(wm->display);
+	if (!wm->text_input) {
+		wlr_log(WLR_ERROR, "Failed to create text input manager");
 	}
 
 	wm->seat = wlr_seat_create(wm->display, "seat0");
@@ -93,6 +115,8 @@ wm_init(struct wm_state *wm)
 		wlr_log(WLR_ERROR, "Failed to create XDG shell");
 		return false;
 	}
+
+	surface_init(wm);
 
 	wm->socket = wl_display_add_socket_auto(wm->display);
 	if (!wm->socket) {
